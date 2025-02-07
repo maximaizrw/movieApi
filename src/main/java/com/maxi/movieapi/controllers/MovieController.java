@@ -8,6 +8,7 @@ import com.maxi.movieapi.service.MovieService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,7 @@ public class MovieController {
         this.objectMapper = objectMapper;
     }
 
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping
     public ResponseEntity<List<MovieDto>> getAllMovies() {
         return ResponseEntity.ok(movieService.getAllMovies());
@@ -57,6 +59,7 @@ public class MovieController {
                 .orElseThrow(() -> new MovieNotFoundException("Movie not found with id: " + id));
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<MovieDto> addMovie(@RequestPart MultipartFile file, @RequestPart @Valid String movieDto) throws IOException {
         MovieDto dto = objectMapper.readValue(movieDto, MovieDto.class);
