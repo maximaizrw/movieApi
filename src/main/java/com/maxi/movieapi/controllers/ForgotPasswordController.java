@@ -76,6 +76,11 @@ public class ForgotPasswordController {
             return new ResponseEntity<>("OTP has expired!", HttpStatus.EXPECTATION_FAILED);
         }
 
+        // Marcar el OTP como verificado
+        fp.setVerified(true);
+        forgotPasswordRepository.save(fp);
+
+
         return ResponseEntity.ok("OTP verified!");
     }
 
@@ -83,6 +88,16 @@ public class ForgotPasswordController {
     @PostMapping("/changePassword/{email}")
     public ResponseEntity<String> changePasswordHandler(@RequestBody ChangePasssword changePassword,
                                                         @PathVariable String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Please provide an valid email!"));
+
+        ForgotPassword fp = forgotPasswordRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Please verify your email first!"));
+
+        if (!fp.isVerified()) {
+            return new ResponseEntity<>("Please verify your email first!", HttpStatus.EXPECTATION_FAILED);
+        }
+
         if (!Objects.equals(changePassword.password(), changePassword.repeatPassword())) {
             return new ResponseEntity<>("Please enter the password again!", HttpStatus.EXPECTATION_FAILED);
         }

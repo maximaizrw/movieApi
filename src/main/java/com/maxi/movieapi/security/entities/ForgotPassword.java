@@ -9,6 +9,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @Builder
 public class ForgotPassword {
 
@@ -21,6 +22,8 @@ public class ForgotPassword {
 
     @Column(nullable = false)
     private Date expirationTime;
+
+    private boolean verified;
 
     @OneToOne
     private User user;
