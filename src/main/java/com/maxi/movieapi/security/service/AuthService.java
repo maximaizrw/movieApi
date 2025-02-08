@@ -38,7 +38,7 @@ public class AuthService {
 
         return AuthResponse.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken.getRefreshTokenValue())
+                .refreshToken(refreshToken.getRefreshToken())
                 .name(savedUser.getName())
                 .email(savedUser.getEmail())
                 .build();
@@ -58,7 +58,7 @@ public class AuthService {
 
         return AuthResponse.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken.getRefreshTokenValue())
+                .refreshToken(refreshToken.getRefreshToken())
                 .name(user.getName())
                 .email(user.getEmail())
                 .build();

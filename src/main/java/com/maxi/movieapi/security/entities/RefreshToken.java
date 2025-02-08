@@ -20,7 +20,7 @@ public class RefreshToken {
 
     @Column(nullable = false, length = 500)
     @NotBlank(message = "Please enter refresh token value!")
-    private String refreshTokenValue;
+    private String refreshToken;
 
     @Column(nullable = false)
     private Instant expirationTime;

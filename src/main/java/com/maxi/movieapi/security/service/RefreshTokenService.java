@@ -31,7 +31,7 @@ public class RefreshTokenService {
         if (refreshToken == null) {
             long refreshTokenValidity = 30 * 100000;
             refreshToken = RefreshToken.builder()
-                    .refreshTokenValue(UUID.randomUUID().toString())
+                    .refreshToken(UUID.randomUUID().toString())
                     .expirationTime(Instant.now().plusMillis(refreshTokenValidity))
                     .user(user)
                     .build();
@@ -43,7 +43,7 @@ public class RefreshTokenService {
     }
 
     public RefreshToken verifyRefreshToken(String refreshToken) {
-        RefreshToken refToken = refreshTokenRepository.findByRefreshTokenValue(refreshToken)
+        RefreshToken refToken = refreshTokenRepository.findByRefreshToken(refreshToken)
                 .orElseThrow(() -> new RuntimeException("Refresh token not found!"));
 
         if (refToken.getExpirationTime().compareTo(Instant.now()) < 0) {

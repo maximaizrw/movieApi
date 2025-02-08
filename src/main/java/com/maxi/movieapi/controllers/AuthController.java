@@ -47,7 +47,7 @@ public class AuthController {
         String accessToken = jwtService.generateToken(user);
         return ResponseEntity.ok((AuthResponse.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken.getRefreshTokenValue())
+                .refreshToken(refreshToken.getRefreshToken())
                 .build()));
     }
 }
