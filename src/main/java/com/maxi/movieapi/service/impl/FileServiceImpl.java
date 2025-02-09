@@ -1,17 +1,20 @@
 package com.maxi.movieapi.service.impl;
 
 import com.maxi.movieapi.service.FileService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Service
 public class FileServiceImpl implements FileService {
-    
+
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @Override
     public String uploadFile(String path, MultipartFile file) throws IOException {
         //Obtener el nombre del archivo
@@ -34,6 +37,7 @@ public class FileServiceImpl implements FileService {
         return fileName;
     }
 
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @Override
     public InputStream getResourceFile(String path, String filename) throws FileNotFoundException {
         try {
@@ -44,14 +48,13 @@ public class FileServiceImpl implements FileService {
         }
     }
 
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @Override
     public void deleteFile(String path, String filename) throws IOException {
+        Path filepath = Paths.get(path, filename);
 
-        String filepath = path + File.separator + filename;
-        File file = new File(filepath);
-
-        if (file.exists()) {
-            file.delete();
+        if (Files.exists(filepath)) {
+            Files.delete(filepath);
         } else {
             throw new FileNotFoundException("No se encontró el archivo");
         }

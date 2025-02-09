@@ -33,6 +33,7 @@ public class MovieController {
         return ResponseEntity.ok(movieService.getAllMovies());
     }
 
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping("/paginate")
     public ResponseEntity<?> getAllMoviesByPage(@RequestParam int page, @RequestParam int size) {
         try {
@@ -42,6 +43,7 @@ public class MovieController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping("/all-movies-page-sort")
     public ResponseEntity<?> getAllMoviesByPageSort(@RequestParam int page, @RequestParam int size, @RequestParam String sortBy, @RequestParam String order) {
         try {
@@ -51,7 +53,7 @@ public class MovieController {
         }
     }
 
-
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<MovieDto> getMovieById(@PathVariable Long id) {
         return movieService.getMovieById(id)
@@ -59,7 +61,7 @@ public class MovieController {
                 .orElseThrow(() -> new MovieNotFoundException("Movie not found with id: " + id));
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @PostMapping
     public ResponseEntity<MovieDto> addMovie(@RequestPart MultipartFile file, @RequestPart @Valid String movieDto) throws IOException {
         MovieDto dto = objectMapper.readValue(movieDto, MovieDto.class);
@@ -68,6 +70,7 @@ public class MovieController {
         return new ResponseEntity<>(savedMovie, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @PutMapping("/{id}")
     public ResponseEntity<MovieDto> updateMovie(@PathVariable Long id, @RequestPart MultipartFile file, @RequestPart String movieDto) throws IOException {
         MovieDto dto = objectMapper.readValue(movieDto, MovieDto.class);
@@ -80,6 +83,7 @@ public class MovieController {
         return new ResponseEntity<>(updatedMovie, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMovie(@PathVariable Long id) throws IOException {
         try {
