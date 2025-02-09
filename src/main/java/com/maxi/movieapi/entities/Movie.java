@@ -77,8 +77,8 @@ public class Movie {
 
     /**
      * La URL o ruta del póster de la película.
-     * Este campo es opcional.
+     * Este campo es obligatorio.
      */
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String poster;
 }
